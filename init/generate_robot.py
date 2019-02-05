@@ -25,7 +25,7 @@ def update_robot():
     pass  # TODO
 
 
-def create_robot(jsonbot):
+def create_robot(botname):
     """ The first execution of this program will create the structure, files and directories needed to a
     pyro4bot robot
     """
@@ -35,7 +35,16 @@ def create_robot(jsonbot):
         os.makedirs('components')
     if not os.path.exists('clients'):
         os.makedirs('clients')
-    pass  # TODO
+
+    jsonbotfile = botname + '.json'
+    jsonurl = 'https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/init/bot_template.json'
+    urllib.request.urlretrieve(jsonurl, jsonbotfile)
+    try:
+        for line in fileinput.input([jsonbotfile], inplace=True):
+            print(line.replace('botname', botname), end='')
+    except IOError:
+        print("There has been an error with the template con the bot")
+        raise
 
 
 if __name__ == "__main__":
@@ -61,8 +70,6 @@ if __name__ == "__main__":
                 update_robot()
             else:
                 create_robot(argument)
-    except IOError:
-        print("The file can not be found: %s" % jsonbot)
     except (KeyboardInterrupt, SystemExit):
         os._exit(0)
     except Exception:
