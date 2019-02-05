@@ -4,13 +4,11 @@
 
 Launcher file
 """
-import sys
 import os
+import sys
+import fileinput
+import urllib.request
 
-from git.repo import base, fun, absolute_import, Repo
-
-
-# sys.path.append("../node/libs")
 
 
 def update_robot():
@@ -22,20 +20,22 @@ def update_robot():
     If not, the user must have developed the necessary files to handle those dependencies of the robots.
     If neither of them are completed, this will show an error message to the user.
     """
-    pass  # TODO
+    pass  # TODO   https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/components/Template.py
 
 
-def create_robot(botname):
-    """ The first execution of this program will create the structure, files and directories needed to a
-    pyro4bot robot
-    """
-    if not os.path.exists('services'):
-        os.makedirs('services')
-    if not os.path.exists('components'):
-        os.makedirs('components')
-    if not os.path.exists('clients'):
-        os.makedirs('clients')
+# https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/services/Template.py
+# https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/clients/Template.py
 
+__url__ = 'https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/'
+
+
+def __create_template__(path):
+    file = path + 'Template.py'
+    fileurl = __url__ + path + 'Template.py'
+    urllib.request.urlretrieve(fileurl, file)
+
+
+def __create_json__(botname):
     jsonbotfile = botname + '.json'
     jsonurl = 'https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/init/bot_template.json'
     urllib.request.urlretrieve(jsonurl, jsonbotfile)
@@ -45,6 +45,17 @@ def create_robot(botname):
     except IOError:
         print("There has been an error with the template con the bot")
         raise
+
+
+def create_robot(botname):
+    """ The first execution of this program will create the structure, files and directories needed to a
+    pyro4bot robot
+    """
+    for path in ['services/', 'components/', 'clients/']:
+        if not os.path.exists(path):
+            os.makedirs(path)
+            __create_template__(path)
+    __create_json__(botname)
 
 
 if __name__ == "__main__":
