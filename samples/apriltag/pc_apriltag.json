@@ -1,0 +1,11 @@
+{
+   "node":{
+      "name":"pc_apriltag",
+      "ethernet":"wlan0"
+    },
+   "services":{
+   },
+   "components":{
+        "apriltag_resolver":{"cls":"apriltag_resolver","frec":0.01}
+    }
+}

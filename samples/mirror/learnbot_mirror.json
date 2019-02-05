@@ -1,0 +1,13 @@
+{
+   "node":{
+      "name":"master",
+      "ethernet":"wlan0"
+    },
+   "services":{
+        "usbserial":{"cls":"usbserial","comPort":"/dev/ttyS0","comPortBaud":115200,"frec":0.01}
+   },
+   "components":{
+        "ruedas":{"cls":"basemotion","BASE":[0,0],"frec":0.03,"mode":"local"},
+        "mirror":{"cls":"mirror","-->": ["ruedas","esclavo.ruedas"]}
+    }
+}

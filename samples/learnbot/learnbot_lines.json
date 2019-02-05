@@ -1,0 +1,14 @@
+{
+   "NODE":{
+      "name":"learnbot_lines",
+      "ethernet":"wlan0"
+    },
+   "services":{
+        "usbserial":{"cls":"usbserial","comPort":"/dev/ttyS0","comPortBaud":115200,"frec":0.01}
+   },
+   "components":{
+       "laser":{"cls":"laser","LASER":[0,0,0],"frec":0.01},
+       "infrared":{"cls":"infrared","IR":[0,0,0,0],"frec":0.02},
+       "basemotion":{"cls":"basemotion","BASE":[0,0],"frec":0.03}
+    }
+}

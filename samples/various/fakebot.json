@@ -1,0 +1,11 @@
+{
+   "NODE":{
+      "nAMe":"fakebot"
+    },
+   "services":{
+   },
+   "components":{
+     "fake":{"cls":"fake","frec":1},
+     "fake2":{"cls":"RemoteCamera","-->":["*.picam"], "frec":1}
+    }
+}
