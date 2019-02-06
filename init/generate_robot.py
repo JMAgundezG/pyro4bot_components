@@ -8,54 +8,57 @@ import os
 import sys
 import fileinput
 import urllib.request
+import fire
+# docs in https://github.com/google/python-fire
+class GenerateRobot:
+    
+    def __init__(self):
+        # https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/services/Template.py
+        # https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/clients/Template.py
+
+        self.__url__ = 'https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/'
+
+    def update_robot(self):
+        """ It checks and updates the directories and files needed to run the robot.
+        this only can be used once the user has described its robot in the json file.
+        _______________
+
+        If the services and components of the robots are already in the repository, they will be downloaded.
+        If not, the user must have developed the necessary files to handle those dependencies of the robots.
+        If neither of them are completed, this will show an error message to the user.
+        """
+        pass  # TODO   https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/components/Template.py
 
 
 
-def update_robot():
-    """ It checks and updates the directories and files needed to run the robot.
-    this only can be used once the user has described its robot in the json file.
-    _______________
 
-    If the services and components of the robots are already in the repository, they will be downloaded.
-    If not, the user must have developed the necessary files to handle those dependencies of the robots.
-    If neither of them are completed, this will show an error message to the user.
-    """
-    pass  # TODO   https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/components/Template.py
+    def __create_template__(self, path):
+        file = path + 'Template.py'
+        fileurl = self.__url__ + path + 'Template.py'
+        urllib.request.urlretrieve(fileurl, file)
 
 
-# https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/services/Template.py
-# https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/clients/Template.py
-
-__url__ = 'https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/'
-
-
-def __create_template__(path):
-    file = path + 'Template.py'
-    fileurl = __url__ + path + 'Template.py'
-    urllib.request.urlretrieve(fileurl, file)
-
-
-def __create_json__(botname):
-    jsonbotfile = botname + '.json'
-    jsonurl = 'https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/init/bot_template.json'
-    urllib.request.urlretrieve(jsonurl, jsonbotfile)
-    try:
-        for line in fileinput.input([jsonbotfile], inplace=True):
-            print(line.replace('botname', botname), end='')
-    except IOError:
-        print("There has been an error with the template con the bot")
-        raise
+    def __create_json__(self, botname):
+        jsonbotfile = botname + '.json'
+        jsonurl = 'https://raw.githubusercontent.com/BertoSerrano/pyro4bot_components/develop/init/bot_template.json'
+        urllib.request.urlretrieve(jsonurl, jsonbotfile)
+        try:
+            for line in fileinput.input([jsonbotfile], inplace=True):
+                print(line.replace('botname', botname), end='')
+        except IOError:
+            print("There has been an error with the template con the bot")
+            raise
 
 
-def create_robot(botname):
-    """ The first execution of this program will create the structure, files and directories needed to a
-    pyro4bot robot
-    """
-    for path in ['services/', 'components/', 'clients/']:
-        if not os.path.exists(path):
-            os.makedirs(path)
-            __create_template__(path)
-    __create_json__(botname)
+    def create_robot(self, botname):
+        """ The first execution of this program will create the structure, files and directories needed to a
+        pyro4bot robot
+        """
+        for path in ['services/', 'components/', 'clients/']:
+            if not os.path.exists(path):
+                os.makedirs(path)
+                __create_template__(path)
+        __create_json__(botname)
 
 
 if __name__ == "__main__":
@@ -71,17 +74,20 @@ if __name__ == "__main__":
     directories like this: python3 generate_robot.py -update
     """
     # TODO
-    try:
-        if len(sys.argv) != 2:
-            print("File was expected as argument.")
-            os._exit(0)
-        else:
-            argument = sys.argv[1]
-            if argument == '-update':
-                update_robot()
-            else:
-                create_robot(argument)
-    except (KeyboardInterrupt, SystemExit):
-        os._exit(0)
-    except Exception:
-        raise
+#    try:
+#        if len(sys.argv) != 2:
+#            print("File was expected as argument.")
+#            os._exit(0)
+#        else:
+#            argument = sys.argv[1]
+#            if argument == '-update':
+#                update_robot()
+#            else:
+#                create_robot(argument)
+#    except (KeyboardInterrupt, SystemExit):
+#        os._exit(0)
+#    except Exception:
+#        raise
+
+
+    fire.Fire(GenerateRobot)
